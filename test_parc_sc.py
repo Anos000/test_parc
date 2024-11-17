@@ -1,42 +1,44 @@
-import requests
 import tkinter as tk
 from tkinter import messagebox
+import requests
+from dotenv import load_dotenv
+import os
 
-# Конфигурация GitHub
-GITHUB_TOKEN = "your_github_token"  # Личный токен GitHub
-REPO_OWNER = "your_username"  # Владелец репозитория
-REPO_NAME = "your_repository"  # Название репозитория
-WORKFLOW_FILE = "run-all-parsers-sequentially.yml"  # Имя YAML-файла
-BRANCH = "main"  # Ветка для запуска
+# Загрузка конфигурации из .env
+load_dotenv()
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")  # Токен GitHub из файла .env
 
+if not GITHUB_TOKEN:
+    raise ValueError("GITHUB_TOKEN не найден. Проверьте файл .env.")
 
-# Функция запуска воркфлоу
-def trigger_workflow():
+# Конфигурация репозитория
+REPO_OWNER = "Anos000"           # Владелец репозитория
+REPO_NAME = "test_parc"            # Имя репозитория
+WORKFLOW_FILE = "All_my_sql.yml"   # Имя файла workflow (.yml)
+
+def start_workflow():
     url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/actions/workflows/{WORKFLOW_FILE}/dispatches"
     headers = {
         "Authorization": f"Bearer {GITHUB_TOKEN}",
-        "Accept": "application/vnd.github.v3+json",
+        "Accept": "application/vnd.github+json"
     }
-    data = {"ref": BRANCH}
+    payload = {"ref": "main"}  # Ветка для запуска workflow
 
     try:
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, json=payload, headers=headers)
         if response.status_code == 204:
-            messagebox.showinfo("Успех", "Парсинг запущен на GitHub!")
+            messagebox.showinfo("Успех", "Workflow успешно запущен!")
         else:
-            messagebox.showerror("Ошибка", f"Не удалось запустить парсинг: {response.status_code}\n{response.text}")
+            messagebox.showerror("Ошибка", f"Ошибка запуска workflow: {response.text}")
     except Exception as e:
-        messagebox.showerror("Ошибка", f"Произошла ошибка: {str(e)}")
+        messagebox.showerror("Ошибка", f"Произошла ошибка: {e}")
 
-
-# Создаём интерфейс Tkinter
+# Интерфейс Tkinter
 root = tk.Tk()
-root.title("Управление парсингом")
+root.title("Управление GitHub Workflow")
 
-# Кнопка для запуска
-btn_start = tk.Button(root, text="Запустить парсинг", command=trigger_workflow, bg="green", fg="white",
-                      font=("Arial", 14))
+btn_start = tk.Button(root, text="Запустить парсинг", command=start_workflow, width=20, height=2)
 btn_start.pack(pady=20)
 
-# Запуск интерфейса
+root.geometry("300x150")
 root.mainloop()
