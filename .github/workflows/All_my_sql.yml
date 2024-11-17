@@ -26,7 +26,7 @@ jobs:
         run: sudo apt-get install mysql-client
 
       # Run Parser 1
-# - name: Run Python parser 1
+      - name: Run Python parser 1
         env:
           MYSQL_HOST: 'localhost'
           MYSQL_PORT: '3306'
@@ -37,7 +37,7 @@ jobs:
           python test_sql_parc_mysql.py
 
       # Run Parser 2
-#       - name: Run Python parser 2
+      - name: Run Python parser 2
         env:
           MYSQL_HOST: 'localhost'
           MYSQL_PORT: '3306'
@@ -48,7 +48,7 @@ jobs:
           python test_sql_parc_mysqlV2.py
 
       # Run Parser 3
-# - name: Run Python parser 3
+      - name: Run Python parser 3
         env:
           MYSQL_HOST: 'localhost'
           MYSQL_PORT: '3306'
