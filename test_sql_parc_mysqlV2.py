@@ -35,13 +35,13 @@ else:
 print(f"Найдено страниц: {last_page}")
 
 # Подключение к базе данных MySQL
+file = open('settings.txt', "r")
 db_config = {
-    'host': 'krutskuy.beget.tech',  # Замените на ваше имя хоста
-    'user': 'krutskuy_parc',       # Ваше имя пользователя
-    'password': 'AnosVoldigod0',    # Ваш пароль
-    'database': 'krutskuy_parc',    # Имя вашей базы данных
+    'host': f'{file.readline().strip()}',
+    'user': f'{file.readline().strip()}',
+    'password': f'{file.readline().strip()}',
+    'database': f'{file.readline().strip()}'
 }
-
 # Подключение к базе данных
 try:
     conn = mysql.connector.connect(**db_config)
@@ -91,7 +91,7 @@ today_data = []
 cursor.execute('DELETE FROM today_productsV2')
 
 # Цикл по всем страницам
-for page in range(1, last_page + 1):
+for page in range(1, 4):
     print(f"Парсим страницу: {page}")
     driver.get(f"https://vapkagro.ru/catalog/avtomobilnye-zapchasti/?PAGEN_1={page}&SIZEN_1=12")
     time.sleep(2)  # Задержка для прогрузки страницы
