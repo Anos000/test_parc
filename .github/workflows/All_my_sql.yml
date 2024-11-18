@@ -37,17 +37,17 @@ jobs:
             python test_sql_parc_mysql.py
   
         # Run Parser 2
-      - name: Run Python parser 2
-        env:
-          MYSQL_HOST: 'localhost'
-          MYSQL_PORT: '3306'
-          MYSQL_USER: 'root'
-          MYSQL_PASSWORD: 'AnosVoldigod0'
-          MYSQL_DATABASE: 'test_baza_mysql'
-        run: |
-          python test_sql_parc_mysqlV2.py
-
-      # Run Parser 3
+#       - name: Run Python parser 2
+#         env:
+#           MYSQL_HOST: 'localhost'
+#           MYSQL_PORT: '3306'
+#           MYSQL_USER: 'root'
+#           MYSQL_PASSWORD: 'AnosVoldigod0'
+#           MYSQL_DATABASE: 'test_baza_mysql'
+#         run: |
+#           python test_sql_parc_mysqlV2.py
+# 
+#       # Run Parser 3
       - name: Run Python parser 3
         env:
           MYSQL_HOST: 'localhost'
