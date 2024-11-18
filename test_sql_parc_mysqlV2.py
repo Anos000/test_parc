@@ -33,7 +33,9 @@ else:
     last_page = 1  # Если нет пагинации, предполагаем, что только одна страница
 
 print(f"Найдено страниц: {last_page}")
-
+with open("settings.txt", "r") as file:
+    content = file.read()
+    print(f"Содержимое settings.txt:\n{content}")
 # Подключение к базе данных MySQL
 with open('settings.txt', "r") as file:
     # Прочитаем все строки и уберем лишние пробелы и символы новой строки
