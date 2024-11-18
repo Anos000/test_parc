@@ -17,6 +17,33 @@ options.add_argument('--disable-dev-shm-usage')
 # Устанавливаем драйвер для Chrome
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
+# Загрузка файла settings.txt с GitHub
+github_url = "https://api.github.com/repos/Anos000/test_parc/contents/settings.txt"
+response = requests.get(github_url)
+
+if response.status_code == 200:
+    file_content = response.json()
+    decoded_content = base64.b64decode(file_content['content']).decode('utf-8').splitlines()
+    db_config = {
+        'host': decoded_content[0].strip(),
+        'user': decoded_content[1].strip(),
+        'password': decoded_content[2].strip(),
+        'database': decoded_content[3].strip()
+    }
+    print(f"Содержимое settings.txt успешно загружено: {db_config}")
+else:
+    print(f"Ошибка загрузки settings.txt: {response.status_code}")
+    exit(1)
+
+# Подключение к базе данных MySQL
+try:
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor()
+    print("Подключение успешно!")
+except mysql.connector.Error as err:
+    print(f"Ошибка подключения: {err}")
+    exit(1)
+
 # URL страницы интернет-магазина
 url = "https://vapkagro.ru/catalog/avtomobilnye-zapchasti/?PAGEN_1=1&SIZEN_1=12"
 driver.get(url)
@@ -33,29 +60,6 @@ else:
     last_page = 1  # Если нет пагинации, предполагаем, что только одна страница
 
 print(f"Найдено страниц: {last_page}")
-with open("settings.txt", "r") as file:
-    content = file.read()
-    print(f"Содержимое settings.txt:\n{content}")
-# Подключение к базе данных MySQL
-with open('settings.txt', "r") as file:
-    # Прочитаем все строки и уберем лишние пробелы и символы новой строки
-    db_config = {
-        'host': file.readline().strip(),      # Убираем лишние пробелы и символы новой строки
-        'user': file.readline().strip(),
-        'password': file.readline().strip(),
-        'database': file.readline().strip()
-    }
-
-# Выводим конфигурацию для проверки
-print(f"Host: {db_config['host']}, User: {db_config['user']}, Database: {db_config['database']}")
-
-# Подключение к базе данных
-try:
-    conn = mysql.connector.connect(**db_config)
-    cursor = conn.cursor()
-    print("Подключение успешно!")
-except mysql.connector.Error as err:
-    print(f"Ошибка подключения: {err}")
 
 # Создаем таблицу, если она не существует
 cursor.execute('''
