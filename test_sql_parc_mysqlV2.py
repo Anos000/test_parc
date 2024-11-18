@@ -35,13 +35,14 @@ else:
 print(f"Найдено страниц: {last_page}")
 
 # Подключение к базе данных MySQL
-file = open('settings.txt', "r")
-db_config = {
-    'host': f'{file.readline().strip()}',
-    'user': f'{file.readline().strip()}',
-    'password': f'{file.readline().strip()}',
-    'database': f'{file.readline().strip()}'
-}
+with open('settings.txt', "r") as file:
+    db_config = {
+        'host': file.readline().strip(),      # Убираем лишние пробелы и символы новой строки
+        'user': file.readline().strip(),
+        'password': file.readline().strip(),
+        'database': file.readline().strip()
+    }
+    print(f"Host: {db_config['host']}, User: {db_config['user']}, Database: {db_config['database']}")
 
 # Функция для проверки подключения и переподключения
 def ensure_connection():
