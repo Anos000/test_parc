@@ -1,4 +1,4 @@
-host=krutskuy.beget.tech
-user=krutskuy_parc
-password=AnosVoldigod0
-database=krutskuy_parc
+krutskuy.beget.tech
+krutskuy_parc
+AnosVoldigod0
+krutskuy_parc
