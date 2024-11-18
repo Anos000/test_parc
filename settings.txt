@@ -1,4 +1,4 @@
-ilyasil9.beget.tech
-ilyasil9_data
-ilyasil9_password
-ilyasil9_data
+host=krutskuy.beget.tech
+user=krutskuy_parc
+password=AnosVoldigod0
+database=krutskuy_parc
