@@ -36,19 +36,16 @@ print(f"Найдено страниц: {last_page}")
 
 # Подключение к базе данных MySQL
 with open('settings.txt', "r") as file:
+    # Прочитаем все строки и уберем лишние пробелы и символы новой строки
     db_config = {
         'host': file.readline().strip(),      # Убираем лишние пробелы и символы новой строки
         'user': file.readline().strip(),
         'password': file.readline().strip(),
         'database': file.readline().strip()
     }
-    print(f"Host: {db_config['host']}, User: {db_config['user']}, Database: {db_config['database']}")
 
-# Функция для проверки подключения и переподключения
-def ensure_connection():
-    if not conn.is_connected():
-        print("Переподключение к базе данных...")
-        conn.reconnect()
+# Выводим конфигурацию для проверки
+print(f"Host: {db_config['host']}, User: {db_config['user']}, Database: {db_config['database']}")
 
 # Подключение к базе данных
 try:
@@ -57,8 +54,6 @@ try:
     print("Подключение успешно!")
 except mysql.connector.Error as err:
     print(f"Ошибка подключения: {err}")
-    driver.quit()  # Закрываем драйвер перед выходом
-    exit(1)  # Завершаем выполнение скрипта
 
 # Создаем таблицу, если она не существует
 cursor.execute('''
@@ -184,6 +179,10 @@ if today_data:
         INSERT INTO productsV2 (date_parsed, title, number, price, image, link)
         VALUES (%s, %s, %s, %s, %s, %s)
     ''', today_data)
+def ensure_connection():
+    if not conn.is_connected():
+        conn.reconnect()
+
 
 # Сохранение изменений и закрытие соединения
 conn.commit()
