@@ -7,7 +7,7 @@ from datetime import datetime
 import pytz
 import re
 import time
-
+import requests
 # Настройка для работы с Chrome
 options = webdriver.ChromeOptions()
 options.add_argument('--headless')  # Запуск браузера в фоновом режиме
