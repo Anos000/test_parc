@@ -42,6 +42,7 @@ db_config = {
     'password': f'{file.readline().strip()}',
     'database': f'{file.readline().strip()}'
 }
+
 # Подключение к базе данных
 try:
     conn = mysql.connector.connect(**db_config)
