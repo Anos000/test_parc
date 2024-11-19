@@ -7,7 +7,8 @@ from mysql.connector import Error
 from datetime import datetime
 import pytz
 import re
-
+import requests
+import base64
 # Настройка для работы с Chrome
 options = webdriver.ChromeOptions()
 options.add_argument('--headless')
@@ -15,6 +16,33 @@ options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+# Загрузка файла settings.txt с GitHub
+github_url = "https://api.github.com/repos/Anos000/test_parc/contents/settings.txt"
+response = requests.get(github_url)
+
+if response.status_code == 200:
+    file_content = response.json()
+    decoded_content = base64.b64decode(file_content['content']).decode('utf-8').splitlines()
+    db_config = {
+        'host': decoded_content[0].strip(),
+        'user': decoded_content[1].strip(),
+        'password': decoded_content[2].strip(),
+        'database': decoded_content[3].strip()
+    }
+    print(f"Содержимое settings.txt успешно загружено: {db_config}")
+else:
+    print(f"Ошибка загрузки settings.txt: {response.status_code}")
+    exit(1)
+
+# Подключение к базе данных MySQL
+try:
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor()
+    print("Подключение успешно!")
+except mysql.connector.Error as err:
+    print(f"Ошибка подключения: {err}")
+    exit(1)
 
 # URL страницы интернет-магазина
 url = "https://avtobat36.ru/catalog/avtomobili_gruzovye/"
