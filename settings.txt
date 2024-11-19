@@ -1,4 +1,4 @@
-krutskuy.beget.tech
-krutskuy_parc
-AnosVoldigod0
-krutskuy_parc
+new_host
+new_user
+new_password
+new_database
