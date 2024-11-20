@@ -50,7 +50,7 @@ jobs:
         # run: |
            # python test_sql_parc_mysql.py
  # 
-      # - name: Run Python parser 2
+# - name: Run Python parser 2
         # env:
            # MYSQL_HOST: ${{ env.MYSQL_HOST }}
            # MYSQL_PORT: '3306'
